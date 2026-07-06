@@ -1,6 +1,6 @@
 import z from 'zod';
-import { loginSchema, registerSchema } from '../schemas/authSchema.js';
-import * as authService from '../services/authService.js';
+import { loginSchema, registerSchema } from '../schemas/auth.schema.js';
+import * as authService from '../services/auth.service.js';
 import { generatedToken } from '../utils/token.js';
 
 export const register = async (req, res, next) => {

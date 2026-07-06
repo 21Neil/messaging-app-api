@@ -24,12 +24,20 @@ login() {
   }'
 }
 
+getChatrooms() {
+  curl -X GET \
+  "$URL/rooms/1" \
+}
+
 case "$1" in
   register)
     register | jq
     ;;
   login)
     login | jq
+    ;;
+  getChatrooms)
+    getChatrooms | jq
     ;;
   *)
     exit 1
