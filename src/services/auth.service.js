@@ -1,13 +1,13 @@
 import { prisma } from '../../lib/prisma.js';
 import bcrypt from 'bcrypt';
 
-export const register = async data => {
-  const hashedPassword = await bcrypt.hash(data.password, 10);
+export const register = async ({ username, password, name}) => {
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   return await prisma.user.create({
     data: {
-      username: data.username,
-      name: data.name,
+      username: username,
+      name: name,
       password: hashedPassword,
     },
     select: {
@@ -19,10 +19,10 @@ export const register = async data => {
   });
 };
 
-export const login = async data => {
+export const login = async ({ username, password }) => {
   const user = await prisma.user.findUnique({
     where: {
-      username: data.username,
+      username: username,
     },
     select: {
       id: true,
@@ -34,7 +34,7 @@ export const login = async data => {
   });
 
   const isPasswordValid = user
-    ? await bcrypt.compare(data.password, user.password)
+    ? await bcrypt.compare(password, user.password)
     : false;
 
   if (!isPasswordValid) return false;

@@ -21,7 +21,3 @@ export const loginSchema = z.object({
   username: usernameSchema,
   password: passwordSchema,
 });
-
-export const getRoomParamsSchema = z.object({
-  id: z.coerce.number()
-})

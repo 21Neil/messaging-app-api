@@ -1,13 +1,23 @@
-import { getRoomParamsSchema } from '../schemas/auth.schema.js';
 import * as chatroomService from '../services/chatroom.service.js';
 
 export const getChatrooms = async (req, res, next) => {
-  const result = getRoomParamsSchema.safeParse(req.params);
-
   try {
-    const chatrooms = await chatroomService.getChatrooms(result.data);
+    const chatrooms = await chatroomService.getChatrooms({ id: req.user.id });
 
     return res.status(200).json(chatrooms);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createChatroom = async (req, res, next) => {
+  try {
+    const chatroom = await chatroomService.createChatroom({
+      name: null,
+      memberIds: [req.user.id, req.body.id]
+    });
+
+    return res.status(200).json({ message: 'Create success.' });
   } catch (err) {
     next(err);
   }
