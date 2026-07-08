@@ -14,7 +14,7 @@ export const createChatroom = async (req, res, next) => {
   try {
     const chatroom = await chatroomService.createChatroom({
       name: null,
-      memberIds: [req.user.id, req.body.id]
+      memberIds: [req.user.id, ...req.body.members],
     });
 
     return res.status(200).json({ message: 'Create success.' });

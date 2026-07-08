@@ -2,7 +2,7 @@
 
 URL="http://localhost:3000/api"
 CONTENT_TYPE_JSON="Content-Type: application/json"
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZSIsIm5hbWUiOiJUZXN0IE5hbWUiLCJhdmF0YXIiOm51bGwsImlhdCI6MTc4MzQwOTg1MCwiZXhwIjoxNzgzNDk2MjUwfQ.yNwejYRymtjS266aAsC2jt4tMyYDxcwkrmHFu5EB3ec"
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZSIsIm5hbWUiOiJUZXN0IE5hbWUiLCJhdmF0YXIiOm51bGwsImlhdCI6MTc4MzQ5Njk2NSwiZXhwIjoxNzgzNTgzMzY1fQ.l_mCF4CB7EWZtXQRYIXRh6bayfzNamLNE5v5aonEeGA"
 AUTHORIZATION="AUTHORIZATION: Bearer $TOKEN"
 
 register() {
@@ -10,7 +10,7 @@ register() {
     "$URL/auth/register" \
     -H "$CONTENT_TYPE_JSON" \
     -d '{
-      "username": "test_username2",
+      "username": "test_username3",
       "password": "testtest",
       "name": "Test Name"
     }'
@@ -38,7 +38,7 @@ createChatroom() {
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
   -d '{
-    "id": 11
+    "members": [12]
   }'
 }
 

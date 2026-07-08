@@ -6,7 +6,24 @@ export const getChatrooms = async ({ id }) => {
       id,
     },
     select: {
-      chatroom: true,
+      chatroom: {
+        include: {
+          members: {
+            where: {
+              id: {
+                not: {
+                  equals: id
+                }
+              }
+            },
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+        },
+      },
     },
   });
 };
