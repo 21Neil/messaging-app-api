@@ -42,6 +42,16 @@ createChatroom() {
   }'
 }
 
+updateChatroom() {
+  curl -X PATCH \
+  "$URL/rooms/1" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+  -d '{
+    "name": "偷偷計畫"
+  }'
+}
+
 case "$1" in
   register)
     register | jq
@@ -54,6 +64,9 @@ case "$1" in
     ;;
   createChatroom)
     createChatroom | jq
+    ;;
+  updateChatroom)
+    updateChatroom | jq
     ;;
   *)
     exit 1

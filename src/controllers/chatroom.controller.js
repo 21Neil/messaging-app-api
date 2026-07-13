@@ -22,3 +22,19 @@ export const createChatroom = async (req, res, next) => {
     next(err);
   }
 };
+
+export const updateChatroom = async (req, res, next) => {
+  const id = +req.params.id;
+  const { name } = req.body;
+
+  try {
+    const chatroom = await chatroomService.updateChatroom({
+      id,
+      name,
+    });
+
+    return res.status(200).json({ message: 'Update success', chatroom });
+  } catch (err) {
+    next(err);
+  }
+};

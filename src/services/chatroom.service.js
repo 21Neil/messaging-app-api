@@ -12,9 +12,9 @@ export const getChatrooms = async ({ id }) => {
             where: {
               id: {
                 not: {
-                  equals: id
-                }
-              }
+                  equals: id,
+                },
+              },
             },
             select: {
               id: true,
@@ -37,6 +37,17 @@ export const createChatroom = async ({ name, memberIds }) => {
           id,
         })),
       },
+    },
+  });
+};
+
+export const updateChatroom = async ({ id, name }) => {
+  return await prisma.chatroom.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
     },
   });
 };
