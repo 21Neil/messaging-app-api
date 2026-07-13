@@ -33,7 +33,20 @@ export const updateChatroom = async (req, res, next) => {
       name,
     });
 
-    return res.status(200).json({ message: 'Update success', chatroom });
+    return res.status(200).json({ message: 'Update success.', chatroom });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const joinChatroom = async (req, res, next) => {
+  const roomId = +req.params.id;
+  const userIds = req.body.userIds;
+
+  try {
+    const chatroom = await chatroomService.joinChatroom({ roomId, userIds });
+
+    return res.status(200).json({ message: 'Join success.', chatroom })
   } catch (err) {
     next(err);
   }

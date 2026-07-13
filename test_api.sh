@@ -2,7 +2,7 @@
 
 URL="http://localhost:3000/api"
 CONTENT_TYPE_JSON="Content-Type: application/json"
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZSIsIm5hbWUiOiJUZXN0IE5hbWUiLCJhdmF0YXIiOm51bGwsImlhdCI6MTc4MzQ5Njk2NSwiZXhwIjoxNzgzNTgzMzY1fQ.l_mCF4CB7EWZtXQRYIXRh6bayfzNamLNE5v5aonEeGA"
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZSIsIm5hbWUiOiJUZXN0IE5hbWUiLCJhdmF0YXIiOm51bGwsImlhdCI6MTc4MzkzMzU2NSwiZXhwIjoxNzg0MDE5OTY1fQ.tTmyMhQNA-Amx98cVw0MwlSwYUZFK_AIJ9IknPVmgs0"
 AUTHORIZATION="AUTHORIZATION: Bearer $TOKEN"
 
 register() {
@@ -52,6 +52,16 @@ updateChatroom() {
   }'
 }
 
+joinChatroom() {
+  curl -X POST \
+  "$URL/rooms/1/members" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+  -d '{
+    "userIds": [12]
+  }'
+}
+
 case "$1" in
   register)
     register | jq
@@ -67,6 +77,9 @@ case "$1" in
     ;;
   updateChatroom)
     updateChatroom | jq
+    ;;
+  joinChatroom)
+    joinChatroom | jq
     ;;
   *)
     exit 1

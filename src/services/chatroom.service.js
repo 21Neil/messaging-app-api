@@ -51,3 +51,16 @@ export const updateChatroom = async ({ id, name }) => {
     },
   });
 };
+
+export const joinChatroom = async ({ roomId, userIds }) => {
+  return await prisma.chatroom.update({
+    where: {
+      id: roomId,
+    },
+    data: {
+      members: {
+        connect: userIds.map(id => ({ id })),
+      },
+    },
+  });
+};
