@@ -64,3 +64,16 @@ export const joinChatroom = async ({ roomId, userIds }) => {
     },
   });
 };
+
+export const leaveChatroom = async ({ roomId, userIds }) => {
+  return await prisma.chatroom.update({
+    where: {
+      id: roomId,
+    },
+    data: {
+      members: {
+        disconnect: userIds.map(id => ({ id })),
+      },
+    },
+  });
+};

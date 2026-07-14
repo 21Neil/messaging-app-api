@@ -62,6 +62,16 @@ joinChatroom() {
   }'
 }
 
+leaveChatroom() {
+  curl -X DELETE \
+  "$URL/rooms/1/members" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+  -d '{
+    "userIds": [12]
+  }'
+}
+
 case "$1" in
   register)
     register | jq
@@ -80,6 +90,9 @@ case "$1" in
     ;;
   joinChatroom)
     joinChatroom | jq
+    ;;
+  leaveChatroom)
+    leaveChatroom | jq
     ;;
   *)
     exit 1
