@@ -28,10 +28,7 @@ export const updateChatroom = async (req, res, next) => {
   const { name } = req.body;
 
   try {
-    const chatroom = await chatroomService.updateChatroom({
-      id,
-      name,
-    });
+    const chatroom = await chatroomService.updateChatroom({ id, name });
 
     return res.status(200).json({ message: 'Update success.', chatroom });
   } catch (err) {
@@ -42,14 +39,9 @@ export const updateChatroom = async (req, res, next) => {
 export const joinChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
   const userIds = req.body.userIds;
-  const currentUserId = req.user.id;
 
   try {
-    const chatroom = await chatroomService.joinChatroom({
-      roomId,
-      currentUserId,
-      userIds,
-    });
+    const chatroom = await chatroomService.joinChatroom({ roomId, userIds });
 
     return res.status(200).json({ message: 'Join success.', chatroom });
   } catch (err) {
@@ -60,14 +52,9 @@ export const joinChatroom = async (req, res, next) => {
 export const leaveChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
   const userIds = req.body.userIds;
-  const currentUserId = req.user.id;
 
   try {
-    const chatroom = await chatroomService.leaveChatroom({
-      roomId,
-      currentUserId,
-      userIds,
-    });
+    const chatroom = await chatroomService.leaveChatroom({ roomId, userIds });
 
     return res.status(200).json({ message: 'Leave success.', chatroom });
   } catch (err) {
@@ -77,15 +64,23 @@ export const leaveChatroom = async (req, res, next) => {
 
 export const deleteChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
-  const currentUserId = req.user.id;
 
   try {
-    const chatroom = await chatroomService.deleteChatroom({
-      roomId,
-      currentUserId,
-    });
+    const chatroom = await chatroomService.deleteChatroom({ roomId });
 
     return res.status(200).json({ message: 'Delete success.', chatroom });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getChatroom = async (req, res, next) => {
+  const roomId = +req.params.id;
+
+  try {
+    const chatroom = await chatroomService.getChatroom({ roomId });
+
+    return res.status(200).json({ chatroom });
   } catch (err) {
     next(err);
   }

@@ -71,7 +71,7 @@ export const updateChatroom = async ({ id, name }) => {
   });
 };
 
-export const joinChatroom = async ({ roomId, currentUserId, userIds }) => {
+export const joinChatroom = async ({ roomId, userIds }) => {
   const isExisting = await checkIsExisting(roomId, userIds);
 
   if (isExisting.length !== 0) throw createError(400, '使用者已在群組');
@@ -98,7 +98,7 @@ export const joinChatroom = async ({ roomId, currentUserId, userIds }) => {
   });
 };
 
-export const leaveChatroom = async ({ roomId, currentUserId, userIds }) => {
+export const leaveChatroom = async ({ roomId, userIds }) => {
   const isExisting = await checkIsExisting(roomId, userIds);
 
   if (isExisting.length === 0) throw createError(400, '使用者不在群組中');
@@ -125,10 +125,42 @@ export const leaveChatroom = async ({ roomId, currentUserId, userIds }) => {
   });
 };
 
-export const deleteChatroom = async ({ roomId, currentUserId }) => {
+export const deleteChatroom = async ({ roomId }) => {
   return await prisma.chatroom.delete({
     where: {
       id: roomId,
+    },
+  });
+};
+
+export const getChatroom = async ({ roomId }) => {
+  return await prisma.chatroom.findUnique({
+    where: {
+      id: roomId,
+    },
+    include: {
+      members: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+      messages: {
+        take: 50,
+        orderBy: {
+          createAt: 'desc',
+        },
+        include: {
+          sender: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+        },
+      },
     },
   });
 };

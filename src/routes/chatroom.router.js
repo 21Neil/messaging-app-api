@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createChatroom,
   deleteChatroom,
+  getChatroom,
   getChatrooms,
   joinChatroom,
   leaveChatroom,
@@ -14,7 +15,9 @@ const chatroomRouter = Router();
 chatroomRouter.get('/', getChatrooms);
 chatroomRouter.post('/', createChatroom);
 chatroomRouter.patch('/:id', verifyChatroomMember, updateChatroom);
-chatroomRouter.post('/:id/members', verifyChatroomMember, joinChatroom)
-chatroomRouter.delete('/:id/members', verifyChatroomMember, leaveChatroom)
+chatroomRouter.post('/:id/members', verifyChatroomMember, joinChatroom);
+chatroomRouter.delete('/:id/members', verifyChatroomMember, leaveChatroom);
+chatroomRouter.delete('/:id', verifyChatroomMember, deleteChatroom);
+chatroomRouter.get('/:id', verifyChatroomMember, getChatroom);
 
 export default chatroomRouter;

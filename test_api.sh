@@ -74,7 +74,14 @@ leaveChatroom() {
 
 deleteChatroom() {
   curl -X DELETE \
-  "$URL/rooms/3" \
+  "$URL/rooms/4" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+}
+
+getChatroom() {
+  curl -X GET \
+  "$URL/rooms/1" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
 }
@@ -103,6 +110,9 @@ case "$1" in
     ;;
   deleteChatroom)
     deleteChatroom | jq
+    ;;
+  getChatroom)
+    getChatroom | jq
     ;;
   *)
     exit 1
