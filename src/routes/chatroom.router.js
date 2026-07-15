@@ -7,14 +7,14 @@ import {
   leaveChatroom,
   updateChatroom,
 } from '../controllers/chatroom.controller.js';
+import { verifyChatroomMember } from '../middleware/chatroom.middleware.js';
 
 const chatroomRouter = Router();
 
 chatroomRouter.get('/', getChatrooms);
 chatroomRouter.post('/', createChatroom);
-chatroomRouter.patch('/:id', updateChatroom);
-chatroomRouter.post('/:id/members', joinChatroom)
-chatroomRouter.delete('/:id/members', leaveChatroom)
-chatroomRouter.delete('/:id', deleteChatroom);
+chatroomRouter.patch('/:id', verifyChatroomMember, updateChatroom);
+chatroomRouter.post('/:id/members', verifyChatroomMember, joinChatroom)
+chatroomRouter.delete('/:id/members', verifyChatroomMember, leaveChatroom)
 
 export default chatroomRouter;
