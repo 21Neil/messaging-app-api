@@ -145,3 +145,15 @@ export const leaveChatroom = async ({ roomId, currentUserId, userIds }) => {
     },
   });
 };
+
+export const deleteChatroom = async ({ roomId, currentUserId }) => {
+  const isMember = await checkIsMember(roomId, currentUserId);
+
+  if (!isMember) throw createError(403, '你不是群組人員');
+
+  return await prisma.chatroom.delete({
+    where: {
+      id: roomId,
+    },
+  });
+};

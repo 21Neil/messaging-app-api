@@ -72,6 +72,13 @@ leaveChatroom() {
   }'
 }
 
+deleteChatroom() {
+  curl -X DELETE \
+  "$URL/rooms/3" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+}
+
 case "$1" in
   register)
     register | jq
@@ -93,6 +100,9 @@ case "$1" in
     ;;
   leaveChatroom)
     leaveChatroom | jq
+    ;;
+  deleteChatroom)
+    deleteChatroom | jq
     ;;
   *)
     exit 1

@@ -17,7 +17,7 @@ export const createChatroom = async (req, res, next) => {
       memberIds: [req.user.id, ...req.body.members],
     });
 
-    return res.status(200).json({ message: 'Create success.' });
+    return res.status(200).json({ message: 'Create success.', chatroom });
   } catch (err) {
     next(err);
   }
@@ -70,6 +70,22 @@ export const leaveChatroom = async (req, res, next) => {
     });
 
     return res.status(200).json({ message: 'Leave success.', chatroom });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteChatroom = async (req, res, next) => {
+  const roomId = +req.params.id;
+  const currentUserId = req.user.id;
+
+  try {
+    const chatroom = await chatroomService.deleteChatroom({
+      roomId,
+      currentUserId,
+    });
+
+    return res.status(200).json({ message: 'Delete success.', chatroom });
   } catch (err) {
     next(err);
   }

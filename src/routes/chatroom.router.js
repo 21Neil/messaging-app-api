@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   createChatroom,
+  deleteChatroom,
   getChatrooms,
   joinChatroom,
   leaveChatroom,
@@ -14,5 +15,6 @@ chatroomRouter.post('/', createChatroom);
 chatroomRouter.patch('/:id', updateChatroom);
 chatroomRouter.post('/:id/members', joinChatroom)
 chatroomRouter.delete('/:id/members', leaveChatroom)
+chatroomRouter.delete('/:id', deleteChatroom);
 
 export default chatroomRouter;
