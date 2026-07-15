@@ -42,9 +42,14 @@ export const updateChatroom = async (req, res, next) => {
 export const joinChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
   const userIds = req.body.userIds;
+  const currentUserId = req.user.id;
 
   try {
-    const chatroom = await chatroomService.joinChatroom({ roomId, userIds });
+    const chatroom = await chatroomService.joinChatroom({
+      roomId,
+      currentUserId,
+      userIds,
+    });
 
     return res.status(200).json({ message: 'Join success.', chatroom });
   } catch (err) {
@@ -55,9 +60,14 @@ export const joinChatroom = async (req, res, next) => {
 export const leaveChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
   const userIds = req.body.userIds;
+  const currentUserId = req.user.id;
 
   try {
-    const chatroom = await chatroomService.leaveChatroom({ roomId, userIds });
+    const chatroom = await chatroomService.leaveChatroom({
+      roomId,
+      currentUserId,
+      userIds,
+    });
 
     return res.status(200).json({ message: 'Leave success.', chatroom });
   } catch (err) {

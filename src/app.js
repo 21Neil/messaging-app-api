@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
-import apiRouter from './routes/api.router.js'
+import apiRouter from './routes/api.router.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +14,7 @@ app.use(
 );
 app.use(express.json());
 
-app.use('/api', apiRouter)
+app.use('/api', apiRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
