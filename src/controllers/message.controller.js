@@ -17,3 +17,19 @@ export const sendMessage = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getMessages = async (req, res, next) => {
+  const roomId = +req.params.id;
+  const cursor = +req.query.cursor;
+
+  try {
+    const messages = await messageService.getMessages({
+      roomId,
+      cursor,
+    });
+
+    return res.status(200).json({ message: 'Get success', messages });
+  } catch (err) {
+    next(err);
+  }
+};

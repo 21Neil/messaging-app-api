@@ -96,6 +96,13 @@ sendMessage() {
   }'
 }
 
+getMessages() {
+  curl -X GET \
+  "$URL/chatrooms/1/messages?cursor=2" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+}
+
 case "$1" in
   register)
     register | jq
@@ -126,6 +133,9 @@ case "$1" in
     ;;
   sendMessage)
     sendMessage | jq
+    ;;
+  getMessages)
+    getMessages | jq
     ;;
   *)
     exit 1

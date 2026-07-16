@@ -13,3 +13,25 @@ export const sendMessage = async ({ roomId, senderId, content }) => {
     },
   });
 };
+
+export const getMessages = async ({ roomId, cursor }) => {
+  return await prisma.messages.findMany({
+    take: 50,
+    skip: 1,
+    include: {
+      sender: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      }
+    },
+    cursor: {
+      id: cursor,
+    },
+    orderBy: {
+      createAt: 'desc',
+    },
+  });
+};
