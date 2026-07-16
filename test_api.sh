@@ -2,7 +2,7 @@
 
 URL="http://localhost:3000/api"
 CONTENT_TYPE_JSON="Content-Type: application/json"
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZSIsIm5hbWUiOiJUZXN0IE5hbWUiLCJhdmF0YXIiOm51bGwsImlhdCI6MTc4NDAxOTk4MCwiZXhwIjoxNzg0MTA2MzgwfQ.i-27zOqrJ_Lgj3CWwSK7y8c9ZbyWwC2CXHnfajfanPQ"
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZTIiLCJuYW1lIjoiVGVzdCBOYW1lIiwiYXZhdGFyIjpudWxsLCJpYXQiOjE3ODQxODYyNjksImV4cCI6MTc4NDI3MjY2OX0.XCTFUfr-MqIFNz7Ufoub9jt7g__RPlsxf7BpGWOUt1w"
 AUTHORIZATION="AUTHORIZATION: Bearer $TOKEN"
 
 register() {
@@ -21,20 +21,20 @@ login() {
   "$URL/auth/login" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
-    "username": "test_username",
+    "username": "test_username2",
     "password": "testtest"
   }'
 }
 
 getChatrooms() {
   curl -X GET \
-  "$URL/rooms" \
+  "$URL/chatrooms" \
   -H "$AUTHORIZATION" \
 }
 
 createChatroom() {
   curl -X POST \
-  "$URL/rooms" \
+  "$URL/chatrooms" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
   -d '{
@@ -44,7 +44,7 @@ createChatroom() {
 
 updateChatroom() {
   curl -X PATCH \
-  "$URL/rooms/1" \
+  "$URL/chatrooms/1" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
   -d '{
@@ -54,7 +54,7 @@ updateChatroom() {
 
 joinChatroom() {
   curl -X POST \
-  "$URL/rooms/1/members" \
+  "$URL/chatrooms/1/members" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
   -d '{
@@ -64,7 +64,7 @@ joinChatroom() {
 
 leaveChatroom() {
   curl -X DELETE \
-  "$URL/rooms/1/members" \
+  "$URL/chatrooms/1/members" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
   -d '{
@@ -74,16 +74,26 @@ leaveChatroom() {
 
 deleteChatroom() {
   curl -X DELETE \
-  "$URL/rooms/4" \
+  "$URL/chatrooms/4" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
 }
 
 getChatroom() {
   curl -X GET \
-  "$URL/rooms/1" \
+  "$URL/chatrooms/1" \
   -H "$CONTENT_TYPE_JSON" \
   -H "$AUTHORIZATION" \
+}
+
+sendMessage() {
+  curl -X POST \
+  "$URL/chatrooms/1/messages" \
+  -H "$CONTENT_TYPE_JSON" \
+  -H "$AUTHORIZATION" \
+  -d '{
+    "content": "Hi!"
+  }'
 }
 
 case "$1" in
@@ -113,6 +123,9 @@ case "$1" in
     ;;
   getChatroom)
     getChatroom | jq
+    ;;
+  sendMessage)
+    sendMessage | jq
     ;;
   *)
     exit 1

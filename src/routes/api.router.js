@@ -6,6 +6,6 @@ import { authenticated } from '../middleware/auth.middleware.js';
 const apiRouter = Router();
 
 apiRouter.use('/auth', authRouter);
-apiRouter.use('/rooms', authenticated, chatroomRouter)
+apiRouter.use('/chatrooms', authenticated, chatroomRouter)
 
 export default apiRouter;

@@ -9,6 +9,7 @@ import {
   updateChatroom,
 } from '../controllers/chatroom.controller.js';
 import { verifyChatroomMember } from '../middleware/chatroom.middleware.js';
+import messageRouter from './message.router.js';
 
 const chatroomRouter = Router();
 
@@ -19,5 +20,6 @@ chatroomRouter.post('/:id/members', verifyChatroomMember, joinChatroom);
 chatroomRouter.delete('/:id/members', verifyChatroomMember, leaveChatroom);
 chatroomRouter.delete('/:id', verifyChatroomMember, deleteChatroom);
 chatroomRouter.get('/:id', verifyChatroomMember, getChatroom);
+chatroomRouter.use('/:id/messages', verifyChatroomMember, messageRouter);
 
 export default chatroomRouter;
