@@ -1,106 +1,108 @@
 #!/usr/bin/env zsh
+# shellcheck shell=bash
 
 URL="http://localhost:3000/api"
 CONTENT_TYPE_JSON="Content-Type: application/json"
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsInVzZXJuYW1lIjoidGVzdF91c2VybmFtZTIiLCJuYW1lIjoiVGVzdCBOYW1lIiwiYXZhdGFyIjpudWxsLCJpYXQiOjE3ODQxODYyNjksImV4cCI6MTc4NDI3MjY2OX0.XCTFUfr-MqIFNz7Ufoub9jt7g__RPlsxf7BpGWOUt1w"
-AUTHORIZATION="AUTHORIZATION: Bearer $TOKEN"
 
 register() {
-  curl -X POST \
+  curl -sS -X POST \
     "$URL/auth/register" \
     -H "$CONTENT_TYPE_JSON" \
     -d '{
-      "username": "test_username3",
+      "username": "test_username4",
       "password": "testtest",
       "name": "Test Name"
-    }'
+    }' \
+    -c cookie.txt
 }
 
 login() {
-  curl -X POST \
+  curl -sS -X POST \
   "$URL/auth/login" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
     "username": "test_username2",
     "password": "testtest"
-  }'
+  }' \
+  -c cookie.txt
 }
 
 getChatrooms() {
   curl -X GET \
   "$URL/chatrooms" \
-  -H "$AUTHORIZATION" \
+  -H "$COOKIE_HEADER" \
+  -b cookie.txt
 }
 
 createChatroom() {
   curl -X POST \
   "$URL/chatrooms" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
   -d '{
     "members": [12]
-  }'
+  }' \
+  -b cookie.txt
 }
 
 updateChatroom() {
   curl -X PATCH \
-  "$URL/chatrooms/1" \
+  "$URL/chatrooms/5" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
   -d '{
-    "name": "偷偷計畫"
-  }'
+    "name": "哇哈哈"
+  }' \
+  -b cookie.txt
 }
 
 joinChatroom() {
   curl -X POST \
-  "$URL/chatrooms/1/members" \
+  "$URL/chatrooms/5/members" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
   -d '{
-    "userIds": [12]
-  }'
+    "userIds": [10]
+  }' \
+  -b cookie.txt
 }
 
 leaveChatroom() {
   curl -X DELETE \
-  "$URL/chatrooms/1/members" \
+  "$URL/chatrooms/5/members" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
   -d '{
-    "userIds": [12]
-  }'
+    "userIds": [10]
+  }' \
+  -b cookie.txt
 }
 
 deleteChatroom() {
   curl -X DELETE \
-  "$URL/chatrooms/4" \
+  "$URL/chatrooms/5" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
+  -b cookie.txt
 }
 
 getChatroom() {
   curl -X GET \
   "$URL/chatrooms/1" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
+  -b cookie.txt
 }
 
 sendMessage() {
   curl -X POST \
   "$URL/chatrooms/1/messages" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
   -d '{
     "content": "Hi!"
-  }'
+  }' \
+  -b cookie.txt
 }
 
 getMessages() {
   curl -X GET \
   "$URL/chatrooms/1/messages?cursor=2" \
   -H "$CONTENT_TYPE_JSON" \
-  -H "$AUTHORIZATION" \
+  -b cookie.txt
 }
 
 case "$1" in
