@@ -105,6 +105,14 @@ getMessages() {
   -b cookie.txt
 }
 
+logout() {
+  curl -X DELETE \
+  "$URL/auth/logout" \
+  -H "$CONTENT_TYPE_JSON" \
+  -b cookie.txt \
+  -c cookie.txt
+}
+
 case "$1" in
   register)
     register | jq
@@ -138,6 +146,9 @@ case "$1" in
     ;;
   getMessages)
     getMessages | jq
+    ;;
+  logout)
+    logout | jq
     ;;
   *)
     exit 1
