@@ -31,20 +31,17 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   const result = loginSchema.safeParse(req.body);
-  console.log(result)
 
   if (!result.success)
     return res.status(400).json(z.flattenError(result.error));
 
   try {
     const user = await authService.login(result.data);
-    console.log(user)
 
     if (!user)
       return res.status(401).json({ message: 'Invalid username or password.' });
 
     const token = generatedToken(user);
-    console.log('first')
 
     return res
       .status(200)
