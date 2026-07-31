@@ -39,7 +39,7 @@ createChatroom() {
   "$URL/chatrooms" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
-    "members": [12]
+    "members": ["test_username3"]
   }' \
   -b cookie.txt
 }

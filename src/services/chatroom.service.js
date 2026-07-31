@@ -46,14 +46,14 @@ export const getChatrooms = async ({ id }) => {
     },
   });
 };
-
-export const createChatroom = async ({ name, memberIds }) => {
+ 
+export const createChatroom = async ({ name, members }) => {
   return await prisma.chatroom.create({
     data: {
       name: name ?? null,
       members: {
-        connect: memberIds.map(id => ({
-          id,
+        connect: members.map(username => ({
+          username,
         })),
       },
     },
