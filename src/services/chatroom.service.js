@@ -149,7 +149,7 @@ export const getChatroom = async ({ roomId }) => {
       messages: {
         take: 50,
         orderBy: {
-          createAt: 'desc',
+          createAt: 'asc',
         },
         include: {
           sender: {

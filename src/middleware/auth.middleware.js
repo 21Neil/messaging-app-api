@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export const authenticated = (req, res, next) => {
-  const token = req.cookies.token
+  const token = req.cookies.token;
 
   if (!token)
     return res.status(401).json({ message: 'Not authorized, no token found.' });
@@ -14,6 +14,6 @@ export const authenticated = (req, res, next) => {
     };
     next();
   } catch (err) {
-    return res.status(401).json({ message: 'Not authorized, token failed.'})
+    return res.status(401).json({ message: 'Not authorized, token failed.' });
   }
 };

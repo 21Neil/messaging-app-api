@@ -39,7 +39,7 @@ export const login = async (req, res, next) => {
     const user = await authService.login(result.data);
 
     if (!user)
-      return res.status(401).json({ message: 'Invalid username or password.' });
+      return res.status(401).json({ code: 'INVALID_CREDENTIALS', message: 'Invalid username or password.' });
 
     const token = generatedToken(user);
 
@@ -51,7 +51,7 @@ export const login = async (req, res, next) => {
         samesite: isProduction ? 'none' : 'lax',
         secure: isProduction,
       })
-      .json({ message: 'Login success.', data: user });
+      .json({ message: 'Login success.' });
   } catch (err) {
     next(err);
   }
@@ -63,6 +63,14 @@ export const logout = async (req, res, next) => {
       .status(200)
       .clearCookie('token')
       .json({ message: 'Logout success' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const me = async (req, res, next) => {
+  try {
+    return res.status(200).json({ user: req.user });
   } catch (err) {
     next(err);
   }
