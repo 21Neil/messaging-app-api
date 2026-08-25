@@ -1,3 +1,4 @@
+import { updateChatroomLastMessageAt } from '../services/chatroom.service.js';
 import * as messageService from '../services/message.service.js';
 
 export const sendMessage = async (req, res, next) => {
@@ -10,6 +11,11 @@ export const sendMessage = async (req, res, next) => {
       roomId,
       senderId,
       content,
+    });
+
+    await updateChatroomLastMessageAt({
+      id: roomId,
+      lastMessageAt: new Date(),
     });
 
     return res.status(200).json({ message: 'Send success', message });

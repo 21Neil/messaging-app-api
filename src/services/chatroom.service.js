@@ -42,11 +42,14 @@ export const getChatrooms = async ({ id }) => {
             },
           },
         },
+        orderBy: {
+          lastMessageAt: 'desc',
+        },
       },
     },
   });
 };
- 
+
 export const createChatroom = async ({ name, members }) => {
   return await prisma.chatroom.create({
     data: {
@@ -60,13 +63,24 @@ export const createChatroom = async ({ name, members }) => {
   });
 };
 
-export const updateChatroom = async ({ id, name }) => {
+export const updateChatroomName = async ({ id, name }) => {
   return await prisma.chatroom.update({
     where: {
       id,
     },
     data: {
       name,
+    },
+  });
+};
+
+export const updateChatroomLastMessageAt = async ({ id, lastMessageAt }) => {
+  return await prisma.chatroom.update({
+    where: {
+      id,
+    },
+    data: {
+      lastMessageAt,
     },
   });
 };
