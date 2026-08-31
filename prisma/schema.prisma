@@ -39,7 +39,7 @@ model Messages {
   content  String
   createAt DateTime @default(now())
 
-  chatroom   Chatroom @relation(fields: [chatroomId], references: [id])
+  chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
   chatroomId Int
 
   sender   User @relation(fields: [senderId], references: [id])
