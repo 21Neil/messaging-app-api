@@ -112,8 +112,8 @@ export const joinChatroom = async ({ roomId, userIds }) => {
   });
 };
 
-export const leaveChatroom = async ({ roomId, userIds }) => {
-  const isExisting = await checkIsExisting(roomId, userIds);
+export const leaveChatroom = async ({ roomId, userId }) => {
+  const isExisting = await checkIsExisting(roomId, [userId]);
 
   if (isExisting.length === 0) throw createError(400, '使用者不在群組中');
 
@@ -123,7 +123,7 @@ export const leaveChatroom = async ({ roomId, userIds }) => {
     },
     data: {
       members: {
-        disconnect: userIds.map(id => ({ id })),
+        disconnect: { id: userId },
       },
     },
     include: {
