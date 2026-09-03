@@ -1,11 +1,11 @@
 import { prisma } from '../../lib/prisma.js';
 import { createError } from '../utils/createError.js';
 
-const checkIsExisting = (roomId, userIds) => {
+const checkIsExisting = (roomId, usernames) => {
   return prisma.user.findMany({
     where: {
-      id: {
-        in: userIds,
+      username: {
+        in: usernames.map(username => username),
       },
       chatroom: {
         some: {
@@ -85,8 +85,8 @@ export const updateChatroomLastMessageAt = async ({ id, lastMessageAt }) => {
   });
 };
 
-export const joinChatroom = async ({ roomId, userIds }) => {
-  const isExisting = await checkIsExisting(roomId, userIds);
+export const joinChatroom = async ({ roomId, usernames }) => {
+  const isExisting = await checkIsExisting(roomId, usernames);
 
   if (isExisting.length !== 0) throw createError(400, '使用者已在群組');
 
@@ -96,7 +96,7 @@ export const joinChatroom = async ({ roomId, userIds }) => {
     },
     data: {
       members: {
-        connect: userIds.map(id => ({ id })),
+        connect: usernames.map(username => ({ username })),
       },
     },
     include: {
@@ -112,8 +112,8 @@ export const joinChatroom = async ({ roomId, userIds }) => {
   });
 };
 
-export const leaveChatroom = async ({ roomId, userId }) => {
-  const isExisting = await checkIsExisting(roomId, [userId]);
+export const leaveChatroom = async ({ roomId, username }) => {
+  const isExisting = await checkIsExisting(roomId, [username]);
 
   if (isExisting.length === 0) throw createError(400, '使用者不在群組中');
 
@@ -123,7 +123,7 @@ export const leaveChatroom = async ({ roomId, userId }) => {
     },
     data: {
       members: {
-        disconnect: { id: userId },
+        disconnect: { username: username },
       },
     },
     include: {
