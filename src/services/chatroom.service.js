@@ -173,6 +173,7 @@ export const getChatroom = async ({ roomId }) => {
         select: {
           id: true,
           name: true,
+          username: true,
           avatar: true,
         },
       },
