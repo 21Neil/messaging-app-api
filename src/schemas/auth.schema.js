@@ -21,3 +21,7 @@ export const loginSchema = z.object({
   username: usernameSchema,
   password: passwordSchema,
 });
+
+export const updateUserNameSchema = z.object({
+  name: nameSchema,
+});
