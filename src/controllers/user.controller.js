@@ -3,6 +3,7 @@ import * as userServices from '../services/user.service.js';
 import { updateUserNameSchema } from '../schemas/auth.schema.js';
 import * as z from 'zod';
 import { generatedToken } from '../utils/token.js';
+import { DEFAULT_COOKIE_OPTIONS } from '../utils/cookies.js';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -23,8 +24,25 @@ export const updateUserName = async (req, res, next) => {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
         sameSite: isProduction ? 'none' : 'lax',
-        secure: isProduction
+        secure: isProduction,
       })
+      .json({ message: 'Change success' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateUserAvatar = async (req, res, next) => {
+  const userId = +req.params.id;
+  const avatar = req.file;
+
+  try {
+    const user = await userServices.updateUserAvatar({ userId, avatar });
+    const token = generatedToken(user);
+
+    return res
+      .status(200)
+      .cookie('token', token, DEFAULT_COOKIE_OPTIONS)
       .json({ message: 'Change success' });
   } catch (err) {
     next(err);

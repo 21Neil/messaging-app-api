@@ -8,6 +8,6 @@ const apiRouter = Router();
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/chatrooms', authenticated, chatroomRouter);
-apiRouter.use('/users', userRouter);
+apiRouter.use('/users', authenticated, userRouter);
 
 export default apiRouter;
