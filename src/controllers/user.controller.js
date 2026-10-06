@@ -1,4 +1,3 @@
-import { createError } from '../utils/createError.js';
 import * as userServices from '../services/user.service.js';
 import { updateUserNameSchema } from '../schemas/auth.schema.js';
 import * as z from 'zod';
@@ -61,8 +60,6 @@ export const getUserAvatar = async (req, res, next) => {
 
   try {
     const avatar = await userServices.getUserAvatar({ imgKey });
-
-    if (!avatar) return res.status(404).json({ message: '未找到圖片' });
 
     return avatar.Body.pipe(res);
   } catch (err) {

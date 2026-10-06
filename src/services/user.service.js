@@ -1,4 +1,3 @@
-import sharp from 'sharp';
 import { prisma } from '../../lib/prisma.js';
 import {
   deleteFileFromR2,
@@ -7,13 +6,7 @@ import {
 } from './storage.service.js';
 import bcrypt from 'bcrypt';
 import { createError } from '../utils/createError.js';
-
-const compressImg = img => {
-  return sharp(img)
-    .resize(100, 100, { withoutEnlargement: true })
-    .toFormat('webp', { quality: 85, effort: 4, smartSubsample: true })
-    .toBuffer({ resolveWithObject: true });
-};
+import { compressAvatar } from '../utils/compressImg.js';
 
 export const updateUserName = async ({ userId, name }) => {
   return await prisma.user.update({
@@ -34,7 +27,7 @@ export const updateUserName = async ({ userId, name }) => {
 
 export const updateUserAvatar = async ({ userId, avatar, oldAvatarKey }) => {
   if (avatar) {
-    const { data: avatarBuffer, info: avatarInfo } = await compressImg(
+    const { data: avatarBuffer, info: avatarInfo } = await compressAvatar(
       avatar.buffer,
     );
     const imgKey = await uploadFileToR2(
@@ -80,7 +73,11 @@ export const updateUserAvatar = async ({ userId, avatar, oldAvatarKey }) => {
 };
 
 export const getUserAvatar = async ({ imgKey }) => {
-  return await getFileFromR2('avatars', imgKey);
+  const avatar = await getFileFromR2('avatars', imgKey);
+
+  if (!avatar) throw createError(400, '未找到圖片');
+  
+  return avatar;
 };
 
 export const updateUserPassword = async ({ userId, password, newPassword }) => {

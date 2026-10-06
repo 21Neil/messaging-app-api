@@ -38,6 +38,7 @@ model Messages {
   id       Int      @id @default(autoincrement())
   content  String
   createAt DateTime @default(now())
+  type     String
 
   chatroom   Chatroom @relation(fields: [chatroomId], references: [id], onDelete: Cascade)
   chatroomId Int

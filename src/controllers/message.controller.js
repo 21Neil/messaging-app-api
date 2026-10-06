@@ -24,17 +24,37 @@ export const sendMessage = async (req, res, next) => {
   }
 };
 
-export const getMessages = async (req, res, next) => {
+export const sendImage = async (req, res, next) => {
   const roomId = +req.params.id;
-  const cursor = +req.query.cursor;
+  const senderId = req.user.id;
+  const image = req.file;
 
   try {
-    const messages = await messageService.getMessages({
+    const message = await messageService.sendImage({
       roomId,
-      cursor,
+      senderId,
+      image,
     });
 
-    return res.status(200).json({ message: 'Get success', messages });
+    await updateChatroomLastMessageAt({
+      id: roomId,
+      lastMessageAt: new Date(),
+    });
+
+    return res.status(200).json({ message: 'Send success', message });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getImage = async (req, res, next) => {
+  const roomId = +req.params.id;
+  const imgKey = req.params.imgKey;
+
+  try {
+    const image = await messageService.getImage({ roomId, imgKey });
+
+    return image.Body.pipe(res);
   } catch (err) {
     next(err);
   }
