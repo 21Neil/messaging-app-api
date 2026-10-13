@@ -21,8 +21,26 @@ model User {
   name     String
   avatar   String?
 
-  chatroom Chatroom[]
-  messages Messages[]
+  chatroom            Chatroom[]
+  messages            Messages[]
+  sentFriendships     Friendships[] @relation("Sender")
+  receivedFriendships Friendships[] @relation("Receiver")
+}
+
+model Friendships {
+  id       Int              @id @default(autoincrement())
+  status   FriendshipStatus @default(PENDING)
+  createAt DateTime         @default(now())
+
+  sender     User @relation("Sender", fields: [senderId], references: [id])
+  senderId   Int
+  receiver   User @relation("Receiver", fields: [receiverId], references: [id])
+  receiverId Int
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
 }
 
 model Chatroom {

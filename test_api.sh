@@ -10,7 +10,7 @@ register() {
     -H "$CONTENT_TYPE_JSON" \
     -d '{
       "username": "test_username4",
-      "password": "testtest",
+      "password": "tetsttes",
       "name": "Test Name"
     }' \
     -c cookie.txt
@@ -21,8 +21,8 @@ login() {
   "$URL/auth/login" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
-    "username": "test_username2",
-    "password": "testtest"
+    "username": "neil",
+    "password": "neiltest"
   }' \
   -c cookie.txt
 }
@@ -113,6 +113,16 @@ logout() {
   -c cookie.txt
 }
 
+addFriend() {
+  curl -X POST \
+  "$URL/friends" \
+  -H "$CONTENT_TYPE_JSON" \
+  -d '{
+    "id": "13"
+  }' \
+  -b cookie.txt
+}
+
 case "$1" in
   register)
     register | jq
@@ -149,6 +159,9 @@ case "$1" in
     ;;
   logout)
     logout | jq
+    ;;
+  addFriend)
+    addFriend | jq
     ;;
   *)
     exit 1
