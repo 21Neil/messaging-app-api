@@ -7,7 +7,7 @@ export const sendMessage = async (req, res, next) => {
   const content = req.body.content;
 
   try {
-    const message = await messageService.sendMessage({
+    await messageService.sendMessage({
       roomId,
       senderId,
       content,
@@ -18,7 +18,7 @@ export const sendMessage = async (req, res, next) => {
       lastMessageAt: new Date(),
     });
 
-    return res.status(200).json({ message: 'Send success', message });
+    return res.status(200).json({ message: 'Send success' });
   } catch (err) {
     next(err);
   }
@@ -30,7 +30,7 @@ export const sendImage = async (req, res, next) => {
   const image = req.file;
 
   try {
-    const message = await messageService.sendImage({
+    await messageService.sendImage({
       roomId,
       senderId,
       image,
@@ -41,7 +41,7 @@ export const sendImage = async (req, res, next) => {
       lastMessageAt: new Date(),
     });
 
-    return res.status(200).json({ message: 'Send success', message });
+    return res.status(200).json({ message: 'Send success' });
   } catch (err) {
     next(err);
   }

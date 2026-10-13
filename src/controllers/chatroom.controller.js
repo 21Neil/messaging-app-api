@@ -14,12 +14,12 @@ export const createChatroom = async (req, res, next) => {
   const name = req.body.name || null;
 
   try {
-    const chatroom = await chatroomService.createChatroom({
+    await chatroomService.createChatroom({
       name,
       members: [req.user.username, ...req.body.members],
     });
 
-    return res.status(200).json({ message: 'Create success.', chatroom });
+    return res.status(200).json({ message: 'Create success.' });
   } catch (err) {
     next(err);
   }
@@ -30,9 +30,9 @@ export const updateChatroomName = async (req, res, next) => {
   const { name } = req.body;
 
   try {
-    const chatroom = await chatroomService.updateChatroomName({ id, name });
+    await chatroomService.updateChatroomName({ id, name });
 
-    return res.status(200).json({ message: 'Update success.', chatroom });
+    return res.status(200).json({ message: 'Update success.' });
   } catch (err) {
     next(err);
   }
@@ -43,9 +43,9 @@ export const joinChatroom = async (req, res, next) => {
   const usernames = req.body.usernames;
 
   try {
-    const chatroom = await chatroomService.joinChatroom({ roomId, usernames });
+    await chatroomService.joinChatroom({ roomId, usernames });
 
-    return res.status(200).json({ message: 'Join success.', chatroom });
+    return res.status(200).json({ message: 'Join success.' });
   } catch (err) {
     next(err);
   }
@@ -61,7 +61,7 @@ export const leaveChatroom = async (req, res, next) => {
     if (chatroom.members.length === 0)
       await chatroomService.deleteChatroom({ roomId });
 
-    return res.status(200).json({ message: 'Leave success.', chatroom });
+    return res.status(200).json({ message: 'Leave success.' });
   } catch (err) {
     next(err);
   }
@@ -71,9 +71,9 @@ export const deleteChatroom = async (req, res, next) => {
   const roomId = +req.params.id;
 
   try {
-    const chatroom = await chatroomService.deleteChatroom({ roomId });
+    await chatroomService.deleteChatroom({ roomId });
 
-    return res.status(200).json({ message: 'Delete success.', chatroom });
+    return res.status(200).json({ message: 'Delete success.' });
   } catch (err) {
     next(err);
   }

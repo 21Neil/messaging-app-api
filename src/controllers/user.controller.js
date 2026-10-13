@@ -9,7 +9,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export const updateUserName = async (req, res, next) => {
   const userId = +req.user.id;
-  const result = await updateUserNameSchema.safeParse(req.body);
+  const result = updateUserNameSchema.safeParse(req.body);
 
   if (!result.success)
     return res.status(400).json(z.flattenError(result.error));
