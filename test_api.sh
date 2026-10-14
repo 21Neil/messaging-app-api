@@ -118,7 +118,7 @@ addFriend() {
   "$URL/friends" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
-    "id": "13"
+    "username": "test_username"
   }' \
   -b cookie.txt
 }
