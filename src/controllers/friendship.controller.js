@@ -15,3 +15,16 @@ export const sentFriendship = async (req, res, next) => {
     next(err);
   }
 };
+
+export const applyFriendship = async (req, res, next) => {
+  const receiverId = req.user.id;
+  const friendshipId = req.body.id;
+
+  try {
+    await friendshipService.applyFriendship({ receiverId, friendshipId });
+
+    return res.status(200).json({ message: 'Apply success' });
+  } catch (err) {
+    next(err);
+  }
+};

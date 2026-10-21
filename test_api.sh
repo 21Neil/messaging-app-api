@@ -21,8 +21,8 @@ login() {
   "$URL/auth/login" \
   -H "$CONTENT_TYPE_JSON" \
   -d '{
-    "username": "neil",
-    "password": "neiltest"
+    "username": "test_username",
+    "password": "testtest"
   }' \
   -c cookie.txt
 }
@@ -123,6 +123,16 @@ addFriend() {
   -b cookie.txt
 }
 
+applyFriend() {
+  curl -X PATCH \
+  "$URL/friends" \
+  -H "$CONTENT_TYPE_JSON" \
+  -d '{
+    "id": 2
+  }' \
+  -b cookie.txt
+}
+
 case "$1" in
   register)
     register | jq
@@ -163,6 +173,9 @@ case "$1" in
   addFriend)
     addFriend | jq
     ;;
+  applyFriend)
+   applyFriend | jq
+   ;;
   *)
     exit 1
     ;;
