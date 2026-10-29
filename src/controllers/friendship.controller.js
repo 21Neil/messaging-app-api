@@ -1,5 +1,17 @@
 import * as friendshipService from '../services/friendship.service.js';
 
+export const getFriends = async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    const friends = await friendshipService.getFriends({ userId });
+
+    return res.status(200).json(friends);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getFriendshipInvitations = async (req, res, next) => {
   const receiverId = req.user.id;
 
