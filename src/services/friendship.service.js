@@ -2,6 +2,28 @@ import { FriendshipStatus } from '../../generated/prisma/index.js';
 import { prisma } from '../../lib/prisma.js';
 import { createError } from '../utils/createError.js';
 
+export const getFriendshipInvitations = async ({ receiverId }) => {
+  return await prisma.friendships.findMany({
+    where: {
+      receiverId,
+      status: FriendshipStatus.PENDING,
+    },
+    include: {
+      sender: {
+        select: {
+          id: true,
+          username: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+    orderBy: {
+      createAt: 'desc',
+    },
+  });
+};
+
 export const sentFriendship = async ({ senderId, receiverUsername }) => {
   const receiver = await prisma.user.findUnique({
     where: {
