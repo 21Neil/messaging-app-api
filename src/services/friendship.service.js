@@ -2,6 +2,20 @@ import { FriendshipStatus } from '../../generated/prisma/index.js';
 import { prisma } from '../../lib/prisma.js';
 import { createError } from '../utils/createError.js';
 
+export const deleteFriend = async ({ userId, friendId }) => {
+  const result = await prisma.friendships.deleteMany({
+    where: {
+      status: FriendshipStatus.ACCEPTED,
+      OR: [
+        { senderId: userId, receiverId: friendId },
+        { senderId: friendId, receiverId: userId },
+      ],
+    },
+  });
+
+  if (result.count === 0) throw createError(404, '找不到此好友關係');
+};
+
 export const getFriends = async ({ userId }) => {
   return await prisma.user.findMany({
     where: {

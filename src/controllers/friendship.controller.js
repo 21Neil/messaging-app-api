@@ -1,5 +1,21 @@
 import * as friendshipService from '../services/friendship.service.js';
 
+export const deleteFriend = async (req, res, next) => {
+  const userId = req.user.id
+  const friendId = +req.params.friendId;
+
+  try {
+    await friendshipService.deleteFriend({
+      userId,
+      friendId,
+    });
+
+    return res.status(200).json({ message: 'Delete success.' });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getFriends = async (req, res, next) => {
   const userId = req.user.id;
 

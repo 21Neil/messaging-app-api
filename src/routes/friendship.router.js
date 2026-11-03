@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   applyFriendship,
+  deleteFriend,
   getFriends,
   getFriendshipInvitations,
   sentFriendship,
@@ -12,5 +13,6 @@ friendshipRouter.get('/', getFriends);
 friendshipRouter.get('/invitations', getFriendshipInvitations);
 friendshipRouter.post('/', sentFriendship);
 friendshipRouter.patch('/', applyFriendship);
+friendshipRouter.delete('/:friendId', deleteFriend);
 
 export default friendshipRouter;
