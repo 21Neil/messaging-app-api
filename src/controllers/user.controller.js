@@ -92,3 +92,15 @@ export const updateUserPassword = async (req, res, next) => {
     next(err);
   }
 };
+
+export const updateUserLastSeen = async (req, res, next) => {
+  const userId = +req.user.id;
+
+  try {
+    await userServices.updateUserLastSeen({ userId });
+
+    return res.status(200).json({ message: '更新使用者最後上線時間成功 ' });
+  } catch (err) {
+    next(err);
+  }
+};

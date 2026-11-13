@@ -76,7 +76,7 @@ export const getUserAvatar = async ({ imgKey }) => {
   const avatar = await getFileFromR2('avatars', imgKey);
 
   if (!avatar) throw createError(400, '未找到圖片');
-  
+
   return avatar;
 };
 
@@ -89,10 +89,13 @@ export const updateUserPassword = async ({ userId, password, newPassword }) => {
   const isPasswordValid = user
     ? await bcrypt.compare(password, user.password)
     : false;
-  const isPasswordSame = user ? await bcrypt.compare(newPassword, user.password) : false;
+  const isPasswordSame = user
+    ? await bcrypt.compare(newPassword, user.password)
+    : false;
 
-  if (!isPasswordValid) throw createError(401, '密碼錯誤', 'INVALID_CREDENTIALS');
-  if (isPasswordSame) throw createError(400, '新密碼不得與舊密碼相同')
+  if (!isPasswordValid)
+    throw createError(401, '密碼錯誤', 'INVALID_CREDENTIALS');
+  if (isPasswordSame) throw createError(400, '新密碼不得與舊密碼相同');
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -106,4 +109,15 @@ export const updateUserPassword = async ({ userId, password, newPassword }) => {
   });
 
   return true;
+};
+
+export const updateUserLastSeen = async ({ userId }) => {
+  return await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      lastSeenAt: new Date(),
+    },
+  });
 };
