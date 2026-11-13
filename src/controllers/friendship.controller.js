@@ -1,7 +1,7 @@
 import * as friendshipService from '../services/friendship.service.js';
 
 export const deleteFriend = async (req, res, next) => {
-  const userId = req.user.id
+  const userId = req.user.id;
   const friendId = +req.params.friendId;
 
   try {
@@ -66,6 +66,18 @@ export const applyFriendship = async (req, res, next) => {
     await friendshipService.applyFriendship({ receiverId, friendshipId });
 
     return res.status(200).json({ message: 'Apply success' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const checkFriendStatuses = async (req, res, next) => {
+  const userId = req.user.id;
+
+  try {
+    const friendStatuses = await friendshipService.checkFriendStatuses(userId);
+
+    return res.status(200).json(friendStatuses);
   } catch (err) {
     next(err);
   }

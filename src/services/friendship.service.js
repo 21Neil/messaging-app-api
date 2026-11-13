@@ -121,8 +121,7 @@ export const applyFriendship = async ({ friendshipId, receiverId }) => {
     },
   });
 
-  if (!friendship) 
-    throw createError(404, '找不到此請求');
+  if (!friendship) throw createError(404, '找不到此請求');
   if (friendship.status !== FriendshipStatus.PENDING)
     throw createError(400, '此請求已處理');
   if (friendship.receiverId !== receiverId)
@@ -137,4 +136,38 @@ export const applyFriendship = async ({ friendshipId, receiverId }) => {
       status: FriendshipStatus.ACCEPTED,
     },
   });
+};
+
+export const checkFriendStatuses = async ({ userId }) => {
+  const friendStatuses = await prisma.user.findMany({
+    where: {
+      OR: [
+        {
+          sentFriendships: {
+            some: {
+              senderId: userId,
+              status: FriendshipStatus.ACCEPTED,
+            },
+          },
+        },
+        {
+          receivedFriendships: {
+            some: {
+              receiverId: userId,
+              status: FriendshipStatus.ACCEPTED,
+            },
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+      lastSeenAt: true,
+    },
+  });
+
+  return friendStatuses.map(friend => ({
+    id: friend.id,
+    online: Date.now() - new Date(friend.lastSeenAt).getTime() < 60000
+  }))
 };
