@@ -20,7 +20,7 @@ export const register = async (req, res, next) => {
       .cookie('token', token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
-        samesite: isProduction ? 'none' : 'lax',
+        sameSite: isProduction ? 'none' : 'lax',
         secure: isProduction,
       })
       .json({ message: 'Register success.', data: newUser });
@@ -48,7 +48,7 @@ export const login = async (req, res, next) => {
       .cookie('token', token, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
-        samesite: isProduction ? 'none' : 'lax',
+        samesSite: isProduction ? 'none' : 'lax',
         secure: isProduction,
       })
       .json({ message: 'Login success.' });
