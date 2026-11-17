@@ -75,7 +75,7 @@ export const checkFriendStatuses = async (req, res, next) => {
   const userId = req.user.id;
 
   try {
-    const friendStatuses = await friendshipService.checkFriendStatuses(userId);
+    const friendStatuses = await friendshipService.checkFriendStatuses({ userId });
 
     return res.status(200).json(friendStatuses);
   } catch (err) {

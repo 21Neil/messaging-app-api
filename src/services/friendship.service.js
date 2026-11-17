@@ -145,7 +145,7 @@ export const checkFriendStatuses = async ({ userId }) => {
         {
           sentFriendships: {
             some: {
-              senderId: userId,
+              receiverId: userId,
               status: FriendshipStatus.ACCEPTED,
             },
           },
@@ -153,7 +153,7 @@ export const checkFriendStatuses = async ({ userId }) => {
         {
           receivedFriendships: {
             some: {
-              receiverId: userId,
+              senderId: userId,
               status: FriendshipStatus.ACCEPTED,
             },
           },
@@ -165,7 +165,7 @@ export const checkFriendStatuses = async ({ userId }) => {
       lastSeenAt: true,
     },
   });
-
+  
   return friendStatuses.map(friend => ({
     id: friend.id,
     online: Date.now() - new Date(friend.lastSeenAt).getTime() < 60000
