@@ -61,7 +61,11 @@ export const logout = async (req, res, next) => {
   try {
     return res
       .status(200)
-      .clearCookie('token')
+      .clearCookie('token', {
+        httpOnly: true,
+        sameSite: isProduction ? 'none' : 'lax',
+        secure: isProduction,
+      })
       .json({ message: 'Logout success' });
   } catch (err) {
     next(err);
