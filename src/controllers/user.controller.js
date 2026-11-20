@@ -3,7 +3,6 @@ import { updateUserNameSchema } from '../schemas/auth.schema.js';
 import * as z from 'zod';
 import { generatedToken } from '../utils/token.js';
 import { DEFAULT_COOKIE_OPTIONS } from '../utils/cookies.js';
-import path from 'path';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -35,14 +34,11 @@ export const updateUserName = async (req, res, next) => {
 export const updateUserAvatar = async (req, res, next) => {
   const userId = +req.user.id;
   const avatar = req.file;
-  const oldAvatarUrl = new URL(req.body.oldAvatarUrl);
-  const oldAvatarKey = path.basename(oldAvatarUrl.pathname);
 
   try {
     const user = await userServices.updateUserAvatar({
       userId,
       avatar,
-      oldAvatarKey,
     });
     const token = generatedToken(user);
 

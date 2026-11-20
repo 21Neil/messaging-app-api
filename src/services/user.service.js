@@ -7,6 +7,7 @@ import {
 import bcrypt from 'bcrypt';
 import { createError } from '../utils/createError.js';
 import { compressAvatar } from '../utils/compressImg.js';
+import path from 'path';
 
 export const updateUserName = async ({ userId, name }) => {
   return await prisma.user.update({
@@ -25,7 +26,7 @@ export const updateUserName = async ({ userId, name }) => {
   });
 };
 
-export const updateUserAvatar = async ({ userId, avatar, oldAvatarKey }) => {
+export const updateUserAvatar = async ({ userId, avatar }) => {
   if (avatar) {
     const { data: avatarBuffer, info: avatarInfo } = await compressAvatar(
       avatar.buffer,
@@ -36,7 +37,22 @@ export const updateUserAvatar = async ({ userId, avatar, oldAvatarKey }) => {
       'avatars',
     );
 
-    if (oldAvatarKey) await deleteFileFromR2('avatars', oldAvatarKey);
+    const userAvatar = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        avatar: true,
+      },
+    });
+    const oldAvatar = userAvatar.avatar;
+
+    if (oldAvatar) {
+      const oldAvatarUrl = new URL(oldAvatar);
+      const oldAvatarKey = path.basename(oldAvatarUrl.pathname);
+
+      if (oldAvatarKey) await deleteFileFromR2('avatars', oldAvatarKey);
+    }
 
     return await prisma.user.update({
       where: {
